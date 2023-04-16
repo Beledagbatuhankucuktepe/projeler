@@ -44,23 +44,23 @@ def dhont():
     prtsys= int(input("Seçim bölgesinde kaç parti seçime girdi:"))
     if prtsys > 0:
         mvsayi = int(input("Milletvekili sayısını giriniz:"))
-        parties = []
-        votes = []
+        parti = []
+        oylar = []
         for i in range(prtsys):
-            party, vote = input(f"Parti {i+1} adını ve oy sayısını giriniz: ").split()
-            parties.append(party)
-            votes.append(int(vote))
+            part,oy = input(f"Parti {i+1} adını ve oy sayısını giriniz: ").split()
+            parti.append(part)
+            oylar.append(int(oy))
 
-        seats = [0]*prtsys
+        koltuklar = [0]*prtsys
         for i in range(mvsayi):
-            quotients = [votes[j]/(seats[j]+1) for j in range(prtsys)]
-            idx = quotients.index(max(quotients))
-            seats[idx] += 1
+            dagitici = [oylar[j]/(koltuklar[j]+1) for j in range(prtsys)]
+            en = dagitici.index(max(dagitici))
+            koltuklar[en] += 1
 
-        result = f"{bolge} seçim bölgesinde "
+        res = f"{bolge} seçim bölgesinde "
         for i in range(prtsys):
-            result += f"{parties[i]} parti {seats[i]} milletvekili, "
-        result = result.rstrip(", ")
+            res += f"{parti[i]} parti {koltuklar[i]} milletvekili, "
+        result = res.rstrip(", ")
         print(result)
 
         with open("sayı.txt", "a") as dosya:
