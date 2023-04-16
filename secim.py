@@ -39,6 +39,35 @@ def cb():
                 aday + "'in" + " " + ister3 + " " + "bolgesinde oyu" + " " + sonuc + " " + "kadar artmistir.""\n")
             quit()
 
+def dhont():
+    bolge = input("Seçim bölgesini giriniz:").title()
+    prtsys= int(input("Seçim bölgesinde kaç parti seçime girdi:"))
+    if prtsys > 0:
+        mvsayi = int(input("Milletvekili sayısını giriniz:"))
+        parties = []
+        votes = []
+        for i in range(prtsys):
+            party, vote = input(f"Parti {i+1} adını ve oy sayısını giriniz: ").split()
+            parties.append(party)
+            votes.append(int(vote))
+
+        seats = [0]*prtsys
+        for i in range(mvsayi):
+            quotients = [votes[j]/(seats[j]+1) for j in range(prtsys)]
+            idx = quotients.index(max(quotients))
+            seats[idx] += 1
+
+        result = f"{bolge} seçim bölgesinde "
+        for i in range(prtsys):
+            result += f"{parties[i]} parti {seats[i]} milletvekili, "
+        result = result.rstrip(", ")
+        print(result)
+
+        with open("sayı.txt", "a") as dosya:
+            dosya.write(result + "\n")
+
+        quit()
+
 def itti(*args):
     itf = input("İttifakın adını giriniz:").__add__(" " + "ittifakının")
     args=input("İttifaktaki partilerin oy oranını giriniz:").split()
@@ -107,7 +136,7 @@ def mvs1(*args):
         return oy
 
 def mv():
-    tercih=input("Yapmak istediğiniz işlemi seçiniz:\n -1-2015 seçimleri farkı ile  2018 seçim farkını hesaplama\n -2-2015 kasım ile 2018 farkını hesaplama\n-3-2015 Haziran ile 2018 seçim farklarını hesaplama\n-4-İttifakların oy oranlarını hesaplama\n-5-İttifakların oy oranlarını birbirnden çıkarma\n-6- Çıkış için q:").lower()
+    tercih=input("Yapmak istediğiniz işlemi seçiniz:\n -1-2015 seçimleri farkı ile  2018 seçim farkını hesaplama\n -2-2015 kasım ile 2018 farkını hesaplama\n-3-2015 Haziran ile 2018 seçim farklarını hesaplama\n-4-İttifakların oy oranlarını hesaplama\n-5-İttifakların oy oranlarını birbirnden çıkarma\n-6-Seçim bölgesine göre milletvekili sayısı hesaplama\n -7- Çıkış için q:").lower()
     if tercih == "1": #2015 hazrian-2018 seçimlerindeki oy değişimleri ile 2015 kasım-haziran oy değişimin kıyaslama
         sonuc1,sonuc2,sonuc3=input("2015 Haziran,2015 Kasım ve 2018 seçim sonuçlarını giriniz:").split()
         s1=int(sonuc1)
@@ -180,6 +209,10 @@ def mv():
         oy=str((mvs()-mvs1()))
         print(itf1+" "+"ile"+" "+itf2+" "+"oy farkı"+" "+"%"+oy+" "+"kadardır\n")
 
+    if tercih == "6":
+        dhont()
+        quit()
+
 
 
 
@@ -189,11 +222,13 @@ def mv():
         print("görüşürüz")
         quit()
 
-girdi=input("Girmek istediğiniz seçim tipi hangisi: \n -1-Cumhurbaşkanlığı: \n -2-Milletvekilliği: \n -3-Çıkmak için q:").lower()
+girdi=input("Girmek istediğiniz seçim tipi hangisi: \n -1-Cumhurbaşkanlığı: \n -2-Milletvekilliği: \n -3- Milletvekili sayısı hesaplamak için: \n -4-Çıkmak için q:").lower()
 
 while girdi == "1":
     cb()
 while girdi == "2":
     mv()
+while girdi == "3":
+    dhont()
 while girdi == "q":
     break
